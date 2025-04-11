@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UserCategoryPreferenceController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.

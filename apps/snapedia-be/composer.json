@@ -8,8 +8,8 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1",
-        "reliese/laravel": "^1.4"
+        "laravel/sanctum": "^4.0",
+        "laravel/tinker": "^2.10.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -54,6 +54,9 @@
         ]
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "12.x-dev"
+        },
         "laravel": {
             "dont-discover": []
         }
@@ -67,6 +70,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

@@ -5,15 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-/** SAVE MODEL */
-class Save extends Model {
+/** WRITER TEST MODEL */
+class WriterTest extends Model {
   use HasFactory;
 
   public function user() {
       return $this->belongsTo(User::class);
-  }
-
-  public function article() {
-      return $this->belongsTo(Article::class);
   }
 }

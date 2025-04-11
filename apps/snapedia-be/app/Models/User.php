@@ -2,95 +2,45 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Sanctum\HasApiTokens;
 
-/**
- * Class User
- *
- * @property int $id
- * @property string|null $name
- * @property string|null $surname
- * @property string|null $emailPrimary
- * @property string|null $emailSecondary
- * @property string|null $phone
- * @property int|null $age
- * @property string|null $profile_image
- * @property string|null $password
- * @property string|null $two_fa_secret
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- *
- * @property Collection|Article[] $articles
- * @property Collection|Comment[] $comments
- * @property Collection|Like[] $likes
- * @property Collection|Save[] $saves
- * @property Collection|Category[] $categories
- * @property Collection|PremiumSubscription[] $premium_subscriptions
- * @property Collection|SnapwriterTest[] $snapwriter_tests
- *
- * @package App\Models
- */
-class User extends Model
-{
-	protected $table = 'users';
 
-	protected $casts = [
-		'age' => 'int'
-	];
+/** USER MODEL */
+class User extends Authenticatable {
+    use HasApiTokens, HasFactory, Notifiable;
 
-	protected $hidden = [
-		'password',
-		'two_fa_secret'
-	];
+    public function premiumTier() {
+        return $this->belongsTo(PremiumTier::class);
+    }
 
-	protected $fillable = [
-		'name',
-		'surname',
-		'emailPrimary',
-		'emailSecondary',
-		'phone',
-		'age',
-		'profile_image',
-		'password',
-		'two_fa_secret'
-	];
+    public function articles() {
+        return $this->hasMany(Article::class, 'author_id');
+    }
 
-	public function articles()
-	{
-		return $this->hasMany(Article::class);
-	}
+    public function likes() {
+        return $this->hasMany(Like::class);
+    }
 
-	public function comments()
-	{
-		return $this->hasMany(Comment::class);
-	}
+    public function saves() {
+        return $this->hasMany(Save::class);
+    }
 
-	public function likes()
-	{
-		return $this->hasMany(Like::class);
-	}
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
 
-	public function saves()
-	{
-		return $this->hasMany(Save::class);
-	}
+    public function followers() {
+        return $this->hasMany(Follower::class, 'user_id');
+    }
 
-	public function categories()
-	{
-		return $this->belongsToMany(Category::class, 'user_category_preferences')
-					->withPivot('id')
-					->withTimestamps();
-	}
+    public function following() {
+        return $this->hasMany(Follower::class, 'follower_id');
+    }
 
-	public function premium_subscriptions()
-	{
-		return $this->hasMany(PremiumSubscription::class);
-	}
-
-	public function snapwriter_tests()
-	{
-		return $this->hasMany(SnapwriterTest::class);
-	}
+    public function writerTest() {
+        return $this->hasOne(WriterTest::class);
+    }
 }
