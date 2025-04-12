@@ -16,7 +16,6 @@ class IsAdmin
         if (auth()->check() && auth()->user()->type === 'admin') {
             return $next($request);
         }
-
-        return response()->json(['message' => 'Access denied. Admin only.'], 403);
+        abort(403);
     }
 }
