@@ -43,4 +43,8 @@ class User extends Authenticatable {
     public function writerTest() {
         return $this->hasOne(WriterTest::class);
     }
+
+    public function updateLogs() {
+        return $this->hasMany(UserUpdateLog::class);
+    }
 }

@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     $this->call([
         PremiumTiersSeeder::class,
         CategoriesSeeder::class,
+        QuestionSeeder::class,
     ]);
 }
 }
