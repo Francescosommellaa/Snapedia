@@ -1,4 +1,16 @@
 <?php return array (
+  'barryvdh/laravel-snappy' => 
+  array (
+    'aliases' => 
+    array (
+      'PDF' => 'Barryvdh\\Snappy\\Facades\\SnappyPdf',
+      'SnappyImage' => 'Barryvdh\\Snappy\\Facades\\SnappyImage',
+    ),
+    'providers' => 
+    array (
+      0 => 'Barryvdh\\Snappy\\ServiceProvider',
+    ),
+  ),
   'consoletvs/charts' => 
   array (
     'providers' => 
