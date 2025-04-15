@@ -22,7 +22,12 @@ Route::prefix('v1')->middleware('api')->group(function () {
     // 🔐 Auth
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
-    
+
+    // ✅ Rotte pubbliche accessibili prima di login
+    Route::post('/username-check', [AuthController::class, 'checkUsername']);
+    Route::post('/email-check', [AuthController::class, 'checkEmailAndSendOtp']);
+    Route::post('/verify-email-code', [AuthController::class, 'verifyOtp']);
+
     // 🔒 Rotte protette da Sanctum
     Route::middleware('auth:sanctum')->group(function () {
 
@@ -37,8 +42,8 @@ Route::prefix('v1')->middleware('api')->group(function () {
         Route::apiResource('followers', FollowerController::class);
         Route::apiResource('writer-tests', WriterTestController::class);
 
-        // 👑 Rotte riservate all'admin
-        Route::middleware('is_admin')->group(function () {
+        // 👑 Admin
+        Route::middleware('auth')->group(function () {
             Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
         });
     });

@@ -10,6 +10,22 @@ use Laravel\Sanctum\HasApiTokens;
 
 /** USER MODEL */
 class User extends Authenticatable {
+
+    protected $fillable = [
+        'name',
+        'surname',
+        'username',
+        'email',
+        'password',
+        'age',
+        'type',
+        'premium_tier_id',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
     use HasApiTokens, HasFactory, Notifiable;
 
     public function premiumTier() {

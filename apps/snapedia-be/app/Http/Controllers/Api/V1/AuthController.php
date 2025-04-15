@@ -144,4 +144,47 @@ class AuthController extends Controller
         $request->user()->sendEmailVerificationNotification();
         return response()->json(['message' => 'Email di verifica inviata.']);
     }
+
+    /** CHECK USERNAME DISPONIBILITÀ */
+    public function checkUsername(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|min:3|max:30|alpha_num',
+        ]);
+
+        $exists = User::where('username', $request->username)->exists();
+        return response()->json(['available' => ! $exists]);
+    }
+
+    /** CHECK EMAIL + INVIO CODICE OTP SIMULATO */
+    public function checkEmailAndSendOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|unique:users,email',
+        ]);
+
+        $code = rand(100000, 999999);
+        $email = $request->email;
+        \Illuminate\Support\Facades\Cache::put("otp:$email", $code, now()->addMinutes(10));
+        \Illuminate\Support\Facades\Log::info("Codice OTP per $email: $code");
+        return response()->json(['sent' => true, 'message' => 'Codice inviato (simulato)']);
+    }
+
+    /** VERIFICA CODICE OTP */
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'code' => 'required|digits:6',
+        ]);
+    
+        $cachedCode = \Illuminate\Support\Facades\Cache::get("otp:{$request->email}");
+    
+        if ($cachedCode && $cachedCode == $request->code) {
+            \Illuminate\Support\Facades\Cache::forget("otp:{$request->email}");
+            return response()->json(['verified' => true]);
+        }
+    
+        return response()->json(['verified' => false], 400);
+    }
 }

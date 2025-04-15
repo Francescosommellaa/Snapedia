@@ -18,5 +18,20 @@ class DatabaseSeeder extends Seeder
         CategoriesSeeder::class,
         QuestionSeeder::class,
     ]);
+
+    User::firstOrCreate(
+        ['email' => 'wikipedia@system.local'],
+        [
+            'name' => 'Wikipedia',
+            'surname' => 'Bot',
+            'username' => 'Wikipedia',
+            'password' => bcrypt('wikipedia_secure'), 
+            'type' => 'user',
+            'age' => 100,
+            'is_verified' => true,
+            'email_verified_at' => now(),
+            'premium_tier_id' => \App\Models\PremiumTier::where('name', 'SnapWriter')->value('id')
+        ]
+    );
 }
 }
