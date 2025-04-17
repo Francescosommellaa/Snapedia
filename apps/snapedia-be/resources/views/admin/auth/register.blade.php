@@ -31,7 +31,7 @@
     @endphp
 
     @if ($step === 1)
-        <form method="POST" action="{{ url('/admin/register/email') }}">
+        <form method="POST" action="{{ url('/admin/auth/register/email') }}">
             @csrf
             <label for="email">Email</label>
             <input type="email" name="email" required placeholder="Inserisci la tua email">
@@ -43,7 +43,7 @@
     <div style="max-width: 500px; margin: auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1);">
 
       {{-- 🟦 FORM 1 - Verifica OTP --}}
-      <form method="POST" action="{{ url('/admin/register/verify') }}">
+      <form method="POST" action="{{ url('/admin/auth/register/verify') }}">
           @csrf
           <input type="hidden" name="email" value="{{ $email }}">
 
@@ -54,7 +54,7 @@
       </form>
 
       {{-- 🟨 FORM 2 - Invia nuovo codice --}}
-      <form method="POST" action="{{ url('/admin/register/email') }}">
+      <form method="POST" action="{{ url('/admin/auth/register/email') }}">
           @csrf
           <input type="hidden" name="email" value="{{ $email }}">
 
@@ -81,7 +81,7 @@
     @endif
 
     @if ($step === 3)
-        <form method="POST" action="{{ url('/admin/register/finalize') }}" id="finalStepForm">
+        <form method="POST" action="{{ url('/admin/auth/register/finalize') }}" id="finalStepForm">
             @csrf
             <input type="hidden" name="email" value="{{ $email }}">
 

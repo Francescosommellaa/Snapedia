@@ -18,12 +18,12 @@
         <h1>🎓 Area Admin Snapedia</h1>
         <p>Benvenuto nella dashboard riservata agli amministratori</p>
 
-        <form action="{{ url('/admin/register-redirect') }}" method="POST">
+        <form action="{{ route('admin.auth.register.redirect') }}" method="POST">
             @csrf
             <button type="submit">📝 Registrati come Admin</button>
         </form>
 
-        <a href="{{ url('/admin/login') }}">
+        <a href="{{ route('admin.auth.login.form') }}">
             <button>🔐 Accedi</button>
         </a>
     </div>

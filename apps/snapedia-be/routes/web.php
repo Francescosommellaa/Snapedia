@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminRegistrationController;
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AdminForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,27 +24,27 @@ Route::get('/', fn () => redirect('/admin'));
 Route::get('/admin', [AdminRegistrationController::class, 'welcome']);
 
 // 🔐 Verifica IP per autorizzare registrazione admin
-Route::post('/admin/register-redirect', [AdminRegistrationController::class, 'redirectToRegister']);
+Route::post('/admin/auth/register-redirect', [AdminRegistrationController::class, 'redirectToRegister'])->name('admin.auth.register.redirect');
 
 
 /*
 |--------------------------------------------------------------------------
 | Registrazione multi-step Admin (accessibile solo da IP autorizzato)
-| Prefix: /admin/register
+| Prefix: /admin/auth/register
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin/register')->group(function () {
+Route::prefix('admin/auth/register')->name('admin.auth.register.')->group(function () {
     // 👤 Step 1: inserimento email
-    Route::get('/', [AdminRegistrationController::class, 'showForm']);
-    
+    Route::get('/', [AdminRegistrationController::class, 'showForm'])->name('show');
+
     // 📧 Invio OTP alla mail
-    Route::post('/email', [AdminRegistrationController::class, 'submitEmail']);
-    
+    Route::post('/email', [AdminRegistrationController::class, 'submitEmail'])->name('email');
+
     // ✅ Verifica codice OTP ricevuto
-    Route::post('/verify', [AdminRegistrationController::class, 'verifyOtp']);
-    
+    Route::post('/verify', [AdminRegistrationController::class, 'verifyOtp'])->name('verify');
+
     // 🔒 Step finale: crea account
-    Route::post('/finalize', [AdminRegistrationController::class, 'finalize']);
+    Route::post('/finalize', [AdminRegistrationController::class, 'finalize'])->name('finalize');
 });
 
 
@@ -54,13 +55,23 @@ Route::prefix('admin/register')->group(function () {
 */
 
 // 🔑 Mostra form login
-Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login.form');
+Route::get('/admin/auth/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.auth.login.form');
 
 // 🔐 Esegui login
-Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/auth/login', [AdminLoginController::class, 'login'])->name('admin.auth.login.submit');
 
 // 🚪 Logout
-Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+Route::post('/admin/auth/logout', [AdminLoginController::class, 'logout'])->name('admin.auth.logout');
+
+
+/*
+|--------------------------------------------------------------------------
+| Recupero password admin (multi-step)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/admin/auth/recover-password', [AdminForgotPasswordController::class, 'showForm'])->name('admin.auth.recover.form');
+Route::post('/admin/auth/recover-password', [AdminForgotPasswordController::class, 'handleStep'])->name('admin.auth.recover.handle');
 
 
 /*

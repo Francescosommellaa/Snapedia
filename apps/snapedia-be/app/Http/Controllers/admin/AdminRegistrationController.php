@@ -28,7 +28,7 @@ class AdminRegistrationController extends Controller
             return redirect('/admin')->with('error', 'Chiedi all\'admin principale di registrarti.');
         }
 
-        return redirect('/admin/register');
+        return redirect('/admin/auth/register');
     }
 
     // 🧾 Step 1: mostra form inserimento email
@@ -38,7 +38,7 @@ class AdminRegistrationController extends Controller
             abort(403, 'Accesso non autorizzato');
         }
 
-        return view('admin.register');
+        return view('admin.auth.register');
     }
 
     // 📧 Invia OTP alla mail, con protezione 30 secondi
@@ -83,7 +83,7 @@ class AdminRegistrationController extends Controller
     
         // 🔁 Se ha cliccato "Invia nuovo codice"
         if ($request->input('action') === 'resend') {
-            return redirect()->route('admin.register.email')->withInput(['email' => $email]);
+            return redirect()->route('admin.auth.register.email')->withInput(['email' => $email]);
         }
     
         // ✅ Se ha cliccato "Verifica codice", procedi alla validazione
@@ -150,6 +150,6 @@ class AdminRegistrationController extends Controller
         Cache::forget("admin_verified:{$email}");
         Cache::forget("admin_otp:{$email}");
 
-        return redirect()->route('admin.login.form')->with('success', 'Registrazione completata! Ora accedi.');
+        return redirect()->route('admin.auth.login.form')->with('success', 'Registrazione completata! Ora accedi.');
     }
 }
