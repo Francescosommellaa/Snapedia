@@ -52,7 +52,7 @@ class AdminRegistrationController extends Controller
     
         // 🔁 Se l'email è già registrata, manda al login
         if (User::where('email', $email)->exists()) {
-            return redirect()->route('admin.login.form')->with('info', 'Email già registrata. Effettua il login.');
+            return redirect()->route('admin.auth.login.form')->with('info', 'Email già registrata. Effettua il login.');
         }
     
         // ✅ Pulisci OTP e cooldown precedenti (in caso di email cambiata o ritorno a step 1)
